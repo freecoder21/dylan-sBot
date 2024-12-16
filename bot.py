@@ -33,7 +33,7 @@ bot = Bot(token=API_TOKEN)
 router = Router()
 
 # Replace 'CHANNEL_ID' with your actual channel ID (must be an integer starting with -100)
-CHANNEL_ID = -1002340148619  # Replace with your channel's ID
+CHANNEL_ID = -1001954879371  # Replace with your channel's ID
 
 
 # Create and initialize the SQLite database
@@ -153,7 +153,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                     [
                         InlineKeyboardButton(
                             text="📢 S'abonner à la chaîne",
-                            url="https://t.me/weirdbottest"
+                            url="https://t.me/yann_games"
                         )
                     ],
                     [
@@ -168,7 +168,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                 "🎉 **Bienvenue dans l'aventure des gains !** 💸\n\n"
                 "🌟 **Rejoignez notre chaîne exclusive pour accéder au bot et commencez à gagner de l'argent dès aujourd'hui !**\n\n"
                 "💰 **C'est simple : invitez vos amis et gagnez 500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
-                "👉 [Rejoindre la chaîne maintenant](https://t.me/weirdbottest)\n\n"
+                "👉 [Rejoindre la chaîne maintenant](https://t.me/yann_games)\n\n"
                 "Après avoir rejoint, cliquez sur **✅ J'ai rejoint**.",
                 reply_markup=keyboard
             )
