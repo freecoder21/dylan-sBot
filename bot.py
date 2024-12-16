@@ -294,4 +294,4 @@ async def handle_buttons(message: types.Message, state: FSMContext):
     # Handle different buttons
     if message.text == "🏦 Retirer":
         # Connect to the database and fetch user's balance
-        conn = sqlite3.connect("utilisateurs
+        conn = sqlite3.connect("utilisateurs.db")
