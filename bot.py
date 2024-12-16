@@ -210,31 +210,17 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
 # Callback handler for first channel subscription check
 @router.callback_query(lambda c: c.data == "check_subscription_first_channel")
 async def check_subscription_first_channel(callback_query: types.CallbackQuery, state: FSMContext):
-     # Create a CommandStart object with the necessary parameters
-    command = CommandStart(args=None, conf=None)
-    
-    # Call `send_welcome` again to recheck subscription
-    message = types.Message(
-        message_id=callback_query.message.message_id,
-        from_user=callback_query.from_user,
-        chat=callback_query.message.chat,
-        date=callback_query.message.date
-    )
+     
+    # Call `check_all_subscriptions` again to recheck subscription
+    message = callback_query.message
     await check_all_subscriptions(message,state)
 
 # Callback handler for second channel subscription check
 @router.callback_query(lambda c: c.data == "check_subscription_second_channel")
 async def check_subscription_second_channel(callback_query: types.CallbackQuery, state: FSMContext):
-  # Create a CommandStart object with the necessary parameters
-    command = CommandStart(args=None, conf=None)
-    
-    # Call `send_welcome` again to recheck subscription
-    message = types.Message(
-        message_id=callback_query.message.message_id,
-        from_user=callback_query.from_user,
-        chat=callback_query.message.chat,
-        date=callback_query.message.date
-    )
+  
+    # Call `check_all_subscriptions` again to recheck subscription
+    message = callback_query.message
     await check_all_subscriptions(message,state)
 
 
