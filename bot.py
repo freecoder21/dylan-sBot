@@ -295,3 +295,251 @@ async def handle_buttons(message: types.Message, state: FSMContext):
     if message.text == "🏦 Retirer":
         # Connect to the database and fetch user's balance
         conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT sold FROM utilisateurs WHERE id = ?", (user_id,))
+        user_data = cursor.fetchone()
+        conn.close()
+
+        if user_data:
+            user_balance = user_data[0]  # Fetch balance
+            if user_balance >= 32000:  # Minimum balance for withdrawal
+                # Notify user to provide their phone number
+                await message.reply(
+                    "🎉 **Félicitations, vous avez atteint le montant minimum pour un retrait !** 💸\n\n"
+                    "Veuillez entrer votre numéro de téléphone pour effectuer le retrait. 📞"
+                )
+
+                # Set state to wait for phone number
+                await state.set_state(WithdrawalStates.waiting_for_phone_number)
+            else:
+                # Notify user of insufficient balance
+                await message.reply(
+                    "❌ **Désolé, votre solde est insuffisant pour un retrait.**\n\n"
+                    f"💰 **Votre solde actuel :** {user_balance} FCFA\n"
+                    f"👉 **Montant minimum requis :** 32,000 FCFA\n\n"
+                    "Continuez à inviter des amis pour accumuler plus de gains ! 🚀"
+                )
+        else:
+            # Notify user if they are not found in the database
+            await message.reply(
+                "❌ **Erreur : Vous n'êtes pas enregistré dans notre base de données.**\n\n"
+                "Veuillez redémarrer le bot en utilisant la commande /start."
+            )
+    elif message.text == "💰 Solde":
+        
+        # Connect to the database
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+        
+        # Fetch the user's balance and the number of invited friends
+        cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
+        user_data = cursor.fetchone()
+        conn.close()
+        
+        if user_data:
+            user_balance, invited_friends = user_data
+            await message.reply(
+                f"👋 Hey {user_name},\n\n"
+                f"💰 **Votre solde actuel :** {user_balance} FCFA\n"
+                f"🤝 **Nombre d'amis invités :** {invited_friends} 🎉\n\n"
+                "Merci de votre participation et continuez à inviter pour accumuler plus de gains ! 🚀"
+            )
+        else:
+            await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
+
+    elif message.text == "📨 Inviter":
+       # Generate a unique referral link for the user
+       referral_link = f"https://t.me/bigfortunateBot?start={user_id}"
+    
+       await message.reply(
+        f"📨 **Invitez vos amis et gagnez !**\n\n"
+        f"👥 Partagez votre lien d'invitation unique :\n\n"
+        f"👉 [Cliquez ici pour copier votre lien](https://t.me/share/url?url={referral_link})\n\n"
+        f"💰 Gagnez **500 FCFA** pour chaque ami qui s'inscrit via votre lien ! 🚀"
+      )
+    elif message.text == "🎁 Bonus":
+        user_id = message.from_user.id
+        user_name = message.from_user.first_name
+    
+        # Connect to the database
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+    
+        # Check if the user has already claimed the bonus
+        cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
+        user_data = cursor.fetchone()
+    
+        if user_data:
+            user_balance, invite_count = user_data
+    
+            # Check if the bonus has already been claimed (assuming bonus claimed flag is stored)
+            if user_balance > 0:  # Replace with a proper check if using a separate 'bonus_claimed' field
+                # Bonus already claimed
+                await message.reply(
+                    f"🔒 Désolé {user_name}, vous avez déjà réclamé votre bonus. 😅\n\n"
+                    "💡 Mais ne vous inquiétez pas, vous pouvez toujours gagner de l'argent en invitant vos amis ! 🤝\n\n"
+                    "Invitez et gagnez **500 FCFA** pour chaque nouvel ami. 🎯"
+                )
+            else:
+                # Add bonus to the user's balance
+                new_balance = user_balance + 300
+                cursor.execute("UPDATE utilisateurs SET sold = ? WHERE id = ?", (new_balance, user_id))
+                conn.commit()
+    
+                await message.reply(
+                    f"🎉 Félicitations {user_name} !\n\n"
+                    f"💸 Vous avez obtenu un bonus de **300 FCFA** ajouté à votre solde. 🤑\n\n"
+                    "Continuez à profiter de l'aventure et gagnez encore plus en invitant vos amis ! 🚀"
+                )
+        else:
+            # User not found in the database
+            await message.reply(
+                "🚨 Une erreur s'est produite. Veuillez vous assurer que vous êtes inscrit. 🛠️"
+            )
+
+            # Close the database connection
+            conn.close()
+
+    elif message.text == "⚙️ Paramètre":
+        
+        # Connect to the database
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+        
+        # Fetch user data
+        cursor.execute("SELECT nom, sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
+        user_data = cursor.fetchone()
+        conn.close()
+        
+        if user_data:
+            user_name, solde, invites = user_data
+            await message.reply(
+                f"👋 Bonjour, {user_name} !\n\n"
+                f"🔢 ID : {user_id} \n\n"
+                f"💰 Solde actuel : {solde} FCFA \n\n"
+                f"👥 Nombre d'invitations : {invites} \n\n"
+                "🌟 Vous voulez gagner encore plus d'argent ?\n\n"
+                "Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸\n\n"
+                "🔗 Partagez votre lien dès maintenant ! \n\n"
+                "Merci et à bientôt ! 🙌"
+            )
+        else:
+            await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
+    elif message.text == "❓ Comment ça marche":
+        await message.reply(
+            "❓ **Comment ça marche**\n\n"
+            "1️⃣ Invitez vos amis à rejoindre le bot.\n"
+            "2️⃣ Gagnez 500 FCFA par ami inscrit.\n"
+            "3️⃣ Retirez vos gains dès que vous atteignez 32,000 FCFA.\n\n"
+            "📈 Plus vous invitez, plus vous gagnez !"
+        )
+
+@router.message(WithdrawalStates.waiting_for_phone_number)
+async def handle_phone_number(message: types.Message, state: FSMContext):
+    phone_number = message.text
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
+
+    # Validate phone number
+    if phone_number.isdigit() and len(phone_number) >= 10:
+        # Connect to the database
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+
+        # Update the database with the phone number
+        cursor.execute(
+            "UPDATE utilisateurs SET sold = sold - 32000 WHERE id = ?",
+            (user_id,)
+        )
+        conn.commit()
+        conn.close()
+
+        # Send a confirmation message to the channel
+        await bot.send_message(
+            chat_id=CHANNEL_ID,
+            text=(
+                f"📢 **Demande de Retrait** 💵\n\n"
+                f"👤 **Nom :** {user_name}\n"
+                f"💰 **Solde :** 32,000 FCFA\n"
+                f"📱 **Mode de Paiement :** Paiement Mobile\n"
+                f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
+                f"✅ **Veuillez traiter cette demande de paiement.**"
+            )
+        )
+
+        # Notify the user of the successful withdrawal process
+        await message.reply(
+            "✅ **Votre demande de retrait a été soumise avec succès !** 💸\n\n"
+            "Un message a été envoyé à l'administrateur. Vous recevrez votre paiement sous peu. Merci ! 🙏"
+        )
+
+        # Clear the state
+        await state.clear()
+    else:
+        await message.reply(
+            "❌ **Numéro de téléphone invalide. Veuillez entrer un numéro valide.**"
+        )
+
+# Set bot commands
+async def set_commands(bot: Bot):
+    commands = [
+        BotCommand(command="/start", description="Démarrer le bot"),
+    ]
+    await bot.set_my_commands(commands)
+
+# Main application setup
+# List of random names, IDs, phone numbers, and payment methods
+random_names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy"]
+random_ids = [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+random_phone_numbers = ["1234567890", "2345678901", "3456789012", "4567890123", "5678901234", "6789012345", "7890123456", "8901234567", "9012345678", "0123456789"]
+payment_methods = ["Orange Money", "Mobile Money", "Moove Money"]
+
+async def send_random_withdrawal_approval():
+    while True:
+        # Generate random data
+        name = random.choice(random_names)
+        user_id = random.choice(random_ids)
+        phone_number = random.choice(random_phone_numbers)
+        payment_method = random.choice(payment_methods)
+        balance = random.randint(32000, 100000)
+
+        # Send the message to the channel
+        await bot.send_message(
+            chat_id=CHANNEL_ID,
+            text=(
+                f"📢 **Demande de Retrait Approuvée** 💵\n\n"
+                f"👤 **Nom :** {name}\n"
+                f"🆔 **ID :** {user_id}\n"
+                f"💰 **Solde :** {balance} FCFA\n\n"
+                f"📱 **Mode de Paiement :** {payment_method}\n"
+                f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
+                f"✅ **Le paiement a été effectué avec succès.**"
+            )
+        )
+
+        # Wait for 1 minute before sending the next message
+        await asyncio.sleep(60)
+
+async def on_startup(app):
+    await bot.set_webhook(WEBHOOK_URL)
+    await set_commands(bot)
+    init_db()
+
+async def on_shutdown(app):
+    await bot.delete_webhook()
+
+def main():
+    init_db()
+    dp = Dispatcher()
+    dp.include_router(router)
+    print("bot.....")
+    app = web.Application()
+    SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=WEBHOOK_PATH)
+    setup_application(app, dp, bot=bot)
+    app.on_startup.append(on_startup)
+    app.on_shutdown.append(on_shutdown)
+
+    web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
+
+if __name__ == "__main__":
+    main()
