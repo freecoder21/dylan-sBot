@@ -193,7 +193,7 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
             conn.close()
       
         # Both channels are joined - proceed to request 1xbet ID
-          await message.reply(
+        await message.reply(
                     f"⚽ Bienvenue à vous cher parieur!! ⚽\n\n"
                     f"Pour les fêtes de fin d’année, votre bookmaker préféré 🎰 a décidé de vous faire une surprise\n"
                     f"pour vous récompenser de votre fidélité envers la plateforme 1XBET.\n"
