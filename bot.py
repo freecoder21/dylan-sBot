@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 class WithdrawalStates(StatesGroup):
     waiting_for_phone_number = State()
 # Replace with your actual bot token
-API_TOKEN = "7732475705:AAGOtmn03ZMLgj2hZ0B3bpWzA58_berL5SU"
+API_TOKEN = "7610826102:AAFe8Oy5aqF5AdxdDI1O9VG1oX5K-4Oz76w"
 
 # Webhook settings
 WEBHOOK_HOST = "https://dylan-sbot-2.onrender.com"  # Replace with your Render app URL
