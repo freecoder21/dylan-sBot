@@ -193,18 +193,20 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
             conn.close()
       
         # Both channels are joined - proceed to request 1xbet ID
-        await message.reply(f"
-           Bienvenue à vous cher parier!!'\n\n
-           "Pour les fêtes de fin d’année votre bookmaker préfère a décidé de vous faire une surprise pour vous récompenser pour votre fidélité envers la platform 1XBET\n\n"
-           "Suivez les étape suivante pour obtenir votre cadeau 🎁\n\n"
-           "👉Créé vous un nouveau compte 1XBET avec le lien des fête qui s’affiche\n"
-           "🔗https://bit.ly/3SyNKrr\n"
-           "👉Utilise le code promo 1x_2420795 pour activer votre compte bonus\n"
-            "👉Faites au moins un dépôt de 1000frs pour activer votre compte Noël\n"
-            "👉Finalement envoyez l’ID de votre compte pour une vérification\n" 
-            "👉Invitée vos amis pour pouvoir gagner plus avec la plateforme 1XBET\n\n\n"
-            "NB⛔️: Tout les comptes qui n’ont pas respecté cette procédure ne verra pas leur compte rémunéré à la fin de la session"
-        )
+        await message.reply(
+                    f"""
+                    ⚽ Bienvenue à vous cher parieur!! ⚽\n\n
+                    Pour les fêtes de fin d’année, votre bookmaker préféré 🎰 a décidé de vous faire une surprise pour vous récompenser de votre fidélité envers la plateforme 1XBET.\n\n
+                    Suivez les étapes suivantes pour obtenir votre cadeau 🎁:\n\n
+                    👉 Créez-vous un nouveau compte 1XBET avec le lien des fêtes qui s’affiche:\n
+                    🔗 https://bit.ly/3SyNKrr\n\n
+                    👉 Utilisez le code promo `1x_2420795` pour activer votre compte bonus.\n\n
+                    👉 Faites au moins un dépôt de 1000frs pour activer votre compte Noël.\n\n
+                    👉 Finalement, envoyez l’ID de votre compte pour une vérification.\n\n
+                    👉 Invitez vos amis pour pouvoir gagner plus avec la plateforme 1XBET.\n\n\n
+                    ⛔️ **NB:** Tous les comptes qui n’ont pas respecté cette procédure ne verront pas leur compte rémunéré à la fin de la session.
+                    """
+                )
         await state.set_state(WithdrawalStates.waiting_for_1xbet_id)
 
      except TelegramAPIError as e:
