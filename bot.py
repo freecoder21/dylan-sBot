@@ -409,7 +409,7 @@ async def handle_buttons(message: types.Message, state: FSMContext):
             "2️⃣ **Créez un compte 1xBet :** Utilisez notre lien spécial et le code promo pour des bonus exclusifs. 🎁\n"
             "3️⃣ **Invitez vos amis :** Gagnez **2000 FCFA** pour chaque ami qui rejoint l'aventure. 🤝\n"
             "4️⃣ **Retirez vos gains :** Atteignez 20,000 FCFA pour effectuer votre retrait. 💰\n\n"
-            "🔥 Plus vous pariez, plus vous gagnez ! Commencez dès maintenant ! 🎉"
+            "🔥 Plus vous iviter, plus vous gagnez ! Commencez dès maintenant ! 🎉"
         )
 
 @router.message(WithdrawalStates.waiting_for_phone_number)
