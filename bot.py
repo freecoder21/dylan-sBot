@@ -124,7 +124,7 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
             await message.reply(
                 "🎉 **Bienvenue dans l'aventure des gains !** 💸\n\n"
                 "🌟 **Rejoignez notre première chaîne exclusive pour accéder au bot et commencez à gagner de l'argent dès aujourd'hui !**\n\n"
-                "💰 **C'est simple : invitez vos amis et gagnez 500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
+                "💰 **C'est simple : invitez vos amis et gagnez 2000 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
                 "👉 [Rejoindre la chaîne maintenant](https://t.me/yann_games)\n\n"
                 "Après avoir rejoint, cliquez sur **✅ J'ai rejoint**.",
                 reply_markup=keyboard
@@ -148,7 +148,7 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
             await message.reply(
                 "🎉 **Félicitations, vous avez rejoint la première chaine !** 🎉\n\n"
                 "🌟 **Rejoignez notre deuxième chaîne exclusive pour commencer à gagner de l'argent dès aujourd'hui !**\n\n"
-                "💰 **C'est simple : invitez vos amis et gagnez 500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
+                "💰 **C'est simple : invitez vos amis et gagnez 2000 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
                 "👉 [Rejoindre la chaîne maintenant](https://t.me/+oUsEqNov1vFkYzhk)\n\n"
                 "Après avoir rejoint, cliquez sur **✅ J'ai rejoint**.",
                 reply_markup=keyboard
@@ -174,7 +174,7 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
             inviter = cursor.fetchone()
             if inviter:
               # Update inviter's balance and invite count
-                cursor.execute("UPDATE utilisateurs SET sold = sold + 500, invite = invite + 1 WHERE id = ?", (inviter_id,))
+                cursor.execute("UPDATE utilisateurs SET sold = sold + 2000, invite = invite + 1 WHERE id = ?", (inviter_id,))
                 conn.commit()
                 # Fetch inviter's updated data
                 cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (inviter_id,))
@@ -186,7 +186,7 @@ async def check_all_subscriptions(message: types.Message, state: FSMContext, inv
                       chat_id=inviter_id,
                       text=(
                          f"🎉 Félicitations ! {user_name} a rejoint grâce à ton invitation.\n\n"
-                         f"💰 Ton solde a été augmenté de 500 FCFA. Solde actuel : {sold} FCFA\n"
+                         f"💰 Ton solde a été augmenté de 2000 FCFA. Solde actuel : {sold} FCFA\n"
                          f"👥 Nombre d'invitations : {invite}"
                           )
                       )
@@ -248,8 +248,8 @@ async def handle_1xbet_id(message: types.Message, state: FSMContext):
             "🎉 **Félicitations !** Votre ID 1xbet a été enregistré avec succès.\n\n"
             "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
             "👉 **Invitez vos amis pour commencer à gagner de l'argent.**\n\n"
-            "💲 Chaque personne invitée vous rapporte 500 FCFA.\n\n"
-            "Vous pouvez retirer 🏦 vos gains à partir de 32,000 FCFA.\n\n"
+            "💲 Chaque personne invitée vous rapporte 2000 FCFA.\n\n"
+            "Vous pouvez retirer 🏦 vos gains à partir de 20,000 FCFA.\n\n"
             "Qu'est-ce que tu attends ? Clique sur 📨 Inviter.",
             reply_markup=get_main_menu()
         )
@@ -278,7 +278,7 @@ async def handle_buttons(message: types.Message, state: FSMContext):
 
         if user_data:
             user_balance = user_data[0]  # Fetch balance
-            if user_balance >= 32000:  # Minimum balance for withdrawal
+            if user_balance >= 20000:  # Minimum balance for withdrawal
                 # Notify user to provide their phone number
                 await message.reply(
                     "🎉 **Félicitations, vous avez atteint le montant minimum pour un retrait !** 💸\n\n"
@@ -292,7 +292,7 @@ async def handle_buttons(message: types.Message, state: FSMContext):
                 await message.reply(
                     "❌ **Désolé, votre solde est insuffisant pour un retrait.**\n\n"
                     f"💰 **Votre solde actuel :** {user_balance} FCFA\n"
-                    f"👉 **Montant minimum requis :** 32,000 FCFA\n\n"
+                    f"👉 **Montant minimum requis :** 20,000 FCFA\n\n"
                     "Continuez à inviter des amis pour accumuler plus de gains ! 🚀"
                 )
         else:
@@ -331,7 +331,7 @@ async def handle_buttons(message: types.Message, state: FSMContext):
         f"📨 **Invitez vos amis et gagnez !**\n\n"
         f"👥 Partagez votre lien d'invitation unique :\n\n"
         f"👉 [Cliquez ici pour copier votre lien](https://t.me/share/url?url={referral_link})\n\n"
-        f"💰 Gagnez **500 FCFA** pour chaque ami qui s'inscrit via votre lien ! 🚀"
+        f"💰 Gagnez **2000 FCFA** pour chaque ami qui s'inscrit via votre lien ! 🚀"
       )
     elif message.text == "🎁 Bonus":
         user_id = message.from_user.id
@@ -354,17 +354,17 @@ async def handle_buttons(message: types.Message, state: FSMContext):
                 await message.reply(
                     f"🔒 Désolé {user_name}, vous avez déjà réclamé votre bonus. 😅\n\n"
                     "💡 Mais ne vous inquiétez pas, vous pouvez toujours gagner de l'argent en invitant vos amis ! 🤝\n\n"
-                    "Invitez et gagnez **500 FCFA** pour chaque nouvel ami. 🎯"
+                    "Invitez et gagnez **2000 FCFA** pour chaque nouvel ami. 🎯"
                 )
             else:
                 # Add bonus to the user's balance
-                new_balance = user_balance + 300
+                new_balance = user_balance + 500
                 cursor.execute("UPDATE utilisateurs SET sold = ? WHERE id = ?", (new_balance, user_id))
                 conn.commit()
     
                 await message.reply(
                     f"🎉 Félicitations {user_name} !\n\n"
-                    f"💸 Vous avez obtenu un bonus de **300 FCFA** ajouté à votre solde. 🤑\n\n"
+                    f"💸 Vous avez obtenu un bonus de **500 FCFA** ajouté à votre solde. 🤑\n\n"
                     "Continuez à profiter de l'aventure et gagnez encore plus en invitant vos amis ! 🚀"
                 )
         else:
@@ -402,12 +402,14 @@ async def handle_buttons(message: types.Message, state: FSMContext):
         else:
             await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
     elif message.text == "❓ Comment ça marche":
-        await message.reply(
-            "❓ **Comment ça marche**\n\n"
-            "1️⃣ Invitez vos amis à rejoindre le bot.\n"
-            "2️⃣ Gagnez 500 FCFA par ami inscrit.\n"
-            "3️⃣ Retirez vos gains dès que vous atteignez 32,000 FCFA.\n\n"
-            "📈 Plus vous invitez, plus vous gagnez !"
+         await message.reply(
+            "⚽ **Bienvenue, parieur !** ⚽\n\n"
+            "Voici comment profiter de nos offres exclusives :\n\n"
+            "1️⃣ **Rejoignez nos canaux Telegram :** Abonnez-vous pour ne manquer aucune opportunité. 🔗\n"
+            "2️⃣ **Créez un compte 1xBet :** Utilisez notre lien spécial et le code promo pour des bonus exclusifs. 🎁\n"
+            "3️⃣ **Invitez vos amis :** Gagnez **2000 FCFA** pour chaque ami qui rejoint l'aventure. 🤝\n"
+            "4️⃣ **Retirez vos gains :** Atteignez 20,000 FCFA pour effectuer votre retrait. 💰\n\n"
+            "🔥 Plus vous pariez, plus vous gagnez ! Commencez dès maintenant ! 🎉"
         )
 
 @router.message(WithdrawalStates.waiting_for_phone_number)
@@ -424,7 +426,7 @@ async def handle_phone_number(message: types.Message, state: FSMContext):
 
         # Update the database with the phone number
         cursor.execute(
-            "UPDATE utilisateurs SET sold = sold - 32000 WHERE id = ?",
+            "UPDATE utilisateurs SET sold = sold - 20000 WHERE id = ?",
             (user_id,)
         )
         conn.commit()
@@ -436,7 +438,7 @@ async def handle_phone_number(message: types.Message, state: FSMContext):
             text=(
                 f"📢 **Demande de Retrait** 💵\n\n"
                 f"👤 **Nom :** {user_name}\n"
-                f"💰 **Solde :** 32,000 FCFA\n"
+                f"💰 **Solde :** 20,000 FCFA\n"
                 f"📱 **Mode de Paiement :** Paiement Mobile\n"
                 f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
                 f"✅ **Veuillez traiter cette demande de paiement.**"
@@ -477,7 +479,7 @@ async def send_random_withdrawal_approval():
         user_id = random.choice(random_ids)
         phone_number = random.choice(random_phone_numbers)
         payment_method = random.choice(payment_methods)
-        balance = random.randint(32000, 100000)
+        balance = random.randint(20000, 100000)
 
         # Send the message to the SECOND channel (changed)
         await bot.send_message(
